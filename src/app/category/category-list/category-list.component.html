@@ -42,5 +42,9 @@
       <ion-label>Test Item 5</ion-label>
     </ion-item>
   </ion-list>
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="md fab-horizontal-end fab-vertical-bottom hydrated"><ion-fab-button class="md ion-activatable ion-focusable hydrated"><ion-icon name="add" role="img" class="md hydrated"></ion-icon></ion-fab-button></ion-fab>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="md fab-horizontal-end fab-vertical-bottom hydrated">
+    <ion-fab-button (click)="openModal()">
+      <ion-icon name="add" role="img" class="md hydrated"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
