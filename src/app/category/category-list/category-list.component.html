@@ -1,8 +1,10 @@
+<!-- Header -->
 <ion-header>
   <ion-toolbar>
     <ion-title>Categories</ion-title>
   </ion-toolbar>
 </ion-header>
+<!-- Content -->
 <ion-content class="ion-padding">
   <ion-grid>
     <ion-row>
@@ -20,28 +22,19 @@
       <ion-col>
         <ion-item>
           <ion-icon name="search" slot="start"></ion-icon>
-          <ion-input [clearInput]="true" placeholder="Search"></ion-input>
+          <ion-input maxlength="40" [clearInput]="true" placeholder="Search"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-list>
-    <ion-item>
-      <ion-label>Test Item 1</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Test Item 2</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Test Item 3</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Test Item 4</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Test Item 5</ion-label>
+  <!-- Category list -->
+  <ion-list inset="true">
+    <!-- Categories -->
+    <ion-item button="true" [detail]="true" (click)="openModal()">
+      <ion-label>Test 1234</ion-label>
     </ion-item>
   </ion-list>
+  <!-- Add button -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="md fab-horizontal-end fab-vertical-bottom hydrated">
     <ion-fab-button (click)="openModal()">
       <ion-icon name="add" role="img" class="md hydrated"></ion-icon>
