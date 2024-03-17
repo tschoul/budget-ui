@@ -1,6 +1,6 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <<ion-menu contentId="main-content" type="overlay" [disabled]="(authService.currentUser() | async) === null">>
+    <ion-menu contentId="main-content" type="overlay" [disabled]="(authService.currentUser() | async) === null">
       <!-- Navigation List -->
       <ion-content>
         <ion-list id="menu-list">
