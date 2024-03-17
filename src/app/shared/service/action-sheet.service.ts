@@ -7,6 +7,24 @@ import { ActionSheetController, ActionSheetOptions } from '@ionic/angular';
 export class ActionSheetService {
   constructor(private readonly actionSheetCtrl: ActionSheetController) {}
 
+  showUpdateConfirmation = async (): Promise<string> =>
+    await this.showActionSheet({
+      header: 'Update Available',
+      subHeader: 'An update is available for installation. Would you like to update now? Unsaved changes will be lost!',
+      buttons: [
+        {
+          text: 'Update',
+          data: { action: 'update' },
+          icon: 'refresh-outline',
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          data: { action: 'cancel' },
+          icon: 'close',
+        },
+      ],
+    });
   showDeletionConfirmation = async (message: string): Promise<string> =>
     await this.showActionSheet({
       header: 'Confirm Deletion',
