@@ -2,7 +2,7 @@
 <ion-header>
 <ion-toolbar>
   <ion-buttons slot="start">
-    <ion-button color="medium" (click)="cancel()"> <!-- Static GUI [disabled]="submitting"> -->
+    <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
       <ion-icon slot="start" name="close"></ion-icon>
       Cancel
     </ion-button>
@@ -14,10 +14,11 @@
       Save
     </ion-button>
   </ion-buttons>
+  <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
 </ion-toolbar>
 </ion-header>
 <!-- Content -->
-<ion-content class="ion-padding"> <!-- Static GUI [formGroup]="categoryForm"> -->
+<ion-content class="ion-padding" [formGroup]="expenseForm">
   <ion-item>
     <ion-icon name="text" slot="start"></ion-icon>
     <ion-input
@@ -25,20 +26,18 @@
     maxlength="40"
     placeholder="Enter the category's name"
     required="true"
-    > <!-- Static GUI [disabled]="submitting" -->
+    [disabled]="submitting">
   </ion-input>
 </ion-item>
-    <ion-item>
-      <ion-icon name="pricetag" slot="start" role="img" class="md hydrated"/>
-      <ion-select interface="popover" placeholder="Choose a category">
-        <ion-select-option>Apfel</ion-select-option>
-        <ion-select-option>Bäume</ion-select-option>
-        <ion-select-option> asdf</ion-select-option>
-      </ion-select>
-      <ion-button slot="end" class="md button button-small button-solid button-has-icon-only ion-activatable ion-focusable hydrated">
-        <ion-icon slot="icon-only" name="add" role="img" class="md hydrated"></ion-icon>
-      </ion-button>
-    </ion-item>
+  <ion-item>
+    <ion-icon name="pricetag" slot="start" role="img" class="md hydrated"/>
+    <ion-select interface="popover" placeholder="Choose a category">
+      <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
+    </ion-select>
+    <ion-button slot="end" class="md button button-small button-solid button-has-icon-only ion-activatable ion-focusable hydrated" (click)="showCategoryModal()">
+      <ion-icon slot="icon-only" name="add" role="img" class="md hydrated"></ion-icon>
+    </ion-button>
+  </ion-item>
   <ion-item >
     <ion-icon name="cash" slot="start" role="img" class="md hydrated"/>
     <ion-input inputmode="decimal" placeholder="Enter the amount in CHF" required="" type="number"/>
@@ -47,13 +46,15 @@
   <ion-item class="item-has-start-slot item-interactive item-datetime">
     <ion-icon name="calendar" slot="start" role="img" class="md hydrated"/>
     <ion-datetime-button datetime="date" class="ion-color ion-color-primary md hydrated" color="primary"/>
-    <ion-modal class="ion-datetime-button-overlay md modal-default overlay-hidden hydrated" id="ion-overlay-19" tabindex="-1" style="z-index: 20027;">
-      <ion-datetime id="date" locale="en-CH" presentation="date">
-      </ion-datetime>
+    <ion-modal class="ion-datetime-button-overlay md modal-default overlay-hidden hydrated" [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="date" locale="de-CH" presentation="date" formControlName="date" [showDefaultButtons]="true" doneText="Pick" cancelText="Nevermind">
+        </ion-datetime>
+      </ng-template>
     </ion-modal>
   </ion-item>
-<ion-fab slot="fixed" vertical="bottom" horizontal="end"> <!-- Static GUI *ngIf="category.id" -->
-  <ion-fab-button (click)="delete()" color="danger"> <!-- Static GUI [disabled]="submitting"> -->
+<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="expense.id">
+  <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
     <ion-icon name="trash"></ion-icon>
   </ion-fab-button>
 </ion-fab>

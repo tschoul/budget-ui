@@ -1,25 +1,60 @@
-import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { filter, from } from 'rxjs';
-import { CategoryModalComponent } from '../../category/category-modal/category-modal.component';
-import { ActionSheetService } from '../../shared/service/action-sheet.service';
+import {Component} from '@angular/core';
+import {ModalController} from '@ionic/angular';
+import {filter, finalize, from} from 'rxjs';
+import {CategoryModalComponent} from "../../category/category-modal/category-modal.component";
+import {ActionSheetService} from '../../shared/service/action-sheet.service';
+import {ExpenseService} from "../expense.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Category, Expense} from "../../shared/domain";
+import {CategoryService} from "../../category/category.service";
+import {ToastService} from "../../shared/service/toast.service";
+import {formatISO, parseISO} from "date-fns";
 
 @Component({
   selector: 'app-expense-modal',
   templateUrl: './expense-modal.component.html',
 })
 export class ExpenseModalComponent {
+  readonly expenseForm: FormGroup;
+  submitting = false;
+  categories: Category[] = [];
+  expense: Expense = {} as Expense;
   constructor(
     private readonly actionSheetService: ActionSheetService,
     private readonly modalCtrl: ModalController,
-  ) {}
+    private readonly formBuilder: FormBuilder,
+    private readonly expenseService: ExpenseService,
+    private readonly categoryService: CategoryService,
+    private readonly toastService: ToastService
+) {
+    this.expenseForm = this.formBuilder.group({
+      id: [], // hidden
+      name: ['', [Validators.required, Validators.maxLength(40)]],
+      amount: [Validators.min(0.01)],
+      date: [formatISO(new Date())]
+
+    });
+  }
 
   cancel(): void {
     this.modalCtrl.dismiss(null, 'cancel');
   }
 
   save(): void {
-    this.modalCtrl.dismiss(null, 'save');
+    this.submitting = true;
+    this.expenseService
+      .upsertExpense({
+        ...this.expenseForm.value,
+        date: formatISO(parseISO(this.expenseForm.value.date), { representation: 'date' }),
+      })
+      .pipe(finalize(() => (this.submitting = false)))
+      .subscribe({
+        next: () => {
+          this.toastService.displaySuccessToast('Expense saved');
+          this.modalCtrl.dismiss(null, 'refresh');
+        },
+        error: (error) => this.toastService.displayErrorToast('Could not save Expense', error),
+      });
   }
 
   delete(): void {
@@ -33,5 +68,14 @@ export class ExpenseModalComponent {
     categoryModal.present();
     const { role } = await categoryModal.onWillDismiss();
     console.log('role', role);
+  }
+  private loadAllCategories(): void {
+    this.categoryService.getAllCategories({ sort: 'name,asc' }).subscribe({
+      next: (categories) => (this.categories = categories),
+      error: (error) => this.toastService.displayErrorToast('Could not load categories', error),
+    });
+  }
+  ionViewWillEnter(): void {
+    this.loadAllCategories();
   }
 }
