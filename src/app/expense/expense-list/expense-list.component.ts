@@ -7,7 +7,6 @@ import {formatPeriod} from "../../shared/period";
 import {ExpenseService} from "../expense.service";
 import {ToastService} from "../../shared/service/toast.service";
 import {from, groupBy, mergeMap, toArray, finalize} from "rxjs";
-
 interface ExpenseGroup {
   date: string;
   expenses: Expense[];
