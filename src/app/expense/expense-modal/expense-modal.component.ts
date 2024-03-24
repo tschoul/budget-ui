@@ -29,6 +29,7 @@ export class ExpenseModalComponent {
 ) {
     this.expenseForm = this.formBuilder.group({
       id: [], // hidden
+      categoryId: [],
       name: ['', [Validators.required, Validators.maxLength(40)]],
       amount: [Validators.min(0.01)],
       date: [formatISO(new Date())]

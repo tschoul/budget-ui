@@ -1,37 +1,37 @@
 <!-- Header -->
 <ion-header>
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
-      <ion-icon slot="start" name="close"></ion-icon>
-      Cancel
-    </ion-button>
-  </ion-buttons>
-  <ion-title>Add Expense</ion-title>
-  <ion-buttons slot="end">
-    <ion-button (click)="save()">
-      <ion-icon slot="start" name="save"></ion-icon>
-      Save
-    </ion-button>
-  </ion-buttons>
-  <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
-</ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
+        <ion-icon slot="start" name="close"></ion-icon>
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Add Expense</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Save
+      </ion-button>
+    </ion-buttons>
+    <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
 </ion-header>
 <!-- Content -->
 <ion-content class="ion-padding" [formGroup]="expenseForm">
   <ion-item>
     <ion-icon name="text" slot="start"></ion-icon>
     <ion-input
-    formControlName="name"
-    maxlength="40"
-    placeholder="Enter the category's name"
-    required="true"
-    [disabled]="submitting">
-  </ion-input>
-</ion-item>
+      formControlName="name"
+      maxlength="40"
+      placeholder="Enter the Expense's name"
+      required="true"
+      [disabled]="submitting">
+    </ion-input>
+  </ion-item>
   <ion-item>
     <ion-icon name="pricetag" slot="start" role="img" class="md hydrated"/>
-    <ion-select interface="popover" placeholder="Choose a category">
+    <ion-select interface="popover" placeholder="Choose a category" formControlName="categoryId">
       <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
     </ion-select>
     <ion-button slot="end" class="md button button-small button-solid button-has-icon-only ion-activatable ion-focusable hydrated" (click)="showCategoryModal()">
@@ -40,7 +40,7 @@
   </ion-item>
   <ion-item >
     <ion-icon name="cash" slot="start" role="img" class="md hydrated"/>
-    <ion-input inputmode="decimal" placeholder="Enter the amount in CHF" required="" type="number"/>
+    <ion-input inputmode="decimal" placeholder="Enter the amount in CHF" required="" type="number" formControlName="amount" />
     <ion-note slot="end" class="md hydrated">CHF</ion-note>
   </ion-item>
   <ion-item class="item-has-start-slot item-interactive item-datetime">
@@ -53,9 +53,9 @@
       </ng-template>
     </ion-modal>
   </ion-item>
-<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="expense.id">
-  <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
-    <ion-icon name="trash"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="expense.id">
+    <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
