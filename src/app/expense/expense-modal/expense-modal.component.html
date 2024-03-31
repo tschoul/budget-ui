@@ -7,7 +7,7 @@
         Cancel
       </ion-button>
     </ion-buttons>
-    <ion-title>Add Expense</ion-title>
+    <ion-title>{{expense.id ? 'Edit' : 'Add'}} Expense</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="save()">
         <ion-icon slot="start" name="save"></ion-icon>
@@ -32,6 +32,7 @@
   <ion-item>
     <ion-icon name="pricetag" slot="start" role="img" class="md hydrated"/>
     <ion-select interface="popover" placeholder="Choose a category" formControlName="categoryId">
+      <ion-select-option [value]="null"></ion-select-option>
       <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
     </ion-select>
     <ion-button slot="end" class="md button button-small button-solid button-has-icon-only ion-activatable ion-focusable hydrated" (click)="showCategoryModal()">
